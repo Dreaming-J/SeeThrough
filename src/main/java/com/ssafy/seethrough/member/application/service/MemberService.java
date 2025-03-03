@@ -6,7 +6,7 @@ import com.ssafy.seethrough.member.application.mapper.MemberDtoMapper;
 import com.ssafy.seethrough.member.domain.Member;
 import com.ssafy.seethrough.member.domain.MemberLog;
 import com.ssafy.seethrough.member.domain.MemberRepository;
-import com.ssafy.seethrough.member.domain.value.MemberId;
+import com.ssafy.seethrough.common.value.UUID;
 import com.ssafy.seethrough.member.exception.MemberNotFoundException;
 import com.ssafy.seethrough.member.presentation.dto.response.MemberLogResponse;
 import com.ssafy.seethrough.member.presentation.dto.response.MemberResponse;
@@ -58,7 +58,7 @@ public class MemberService {
      * @return
      */
     public MemberResponse getMemberDetail(String memberId) {
-        MemberId memberIdObj = new MemberId(memberId);
+        UUID memberIdObj = new UUID(memberId);
 
 
 

@@ -11,7 +11,7 @@ public class MemberDtoMapper {
 
     public MemberResponse toResponse(Member member) {
         return MemberResponse.builder()
-            .memberId(member.getId().getValue())
+            .memberId(member.getId().value())
             .name(member.getName())
             .isIdentified(member.getIsIdentified())
             .createdAt(member.getCreatedAt())
@@ -22,7 +22,7 @@ public class MemberDtoMapper {
 
     public MemberLogResponse toResponse(MemberLog memberLog) {
         return MemberLogResponse.builder()
-            .memberId(memberLog.getMemberId().getValue())
+            .memberId(memberLog.getMemberId().value())
             .name(memberLog.getName())
             .image_url(memberLog.getImageUrl())
             .createdAt(memberLog.getCreatedAt())

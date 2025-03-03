@@ -1,6 +1,6 @@
 package com.ssafy.seethrough.member.domain;
 
-import com.ssafy.seethrough.member.domain.value.MemberId;
+import com.ssafy.seethrough.common.value.UUID;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
@@ -12,7 +12,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Member {
-    private MemberId id;
+    private UUID id;
     private String name;
     private Boolean isIdentified;
     private LocalDateTime createdAt;

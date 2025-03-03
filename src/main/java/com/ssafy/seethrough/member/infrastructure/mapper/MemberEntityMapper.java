@@ -1,7 +1,7 @@
 package com.ssafy.seethrough.member.infrastructure.mapper;
 
 import com.ssafy.seethrough.member.domain.Member;
-import com.ssafy.seethrough.member.domain.value.MemberId;
+import com.ssafy.seethrough.common.value.UUID;
 import com.ssafy.seethrough.member.infrastructure.entity.MemberEntity;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ public class MemberEntityMapper {
 
     public MemberEntity toEntity(Member member) {
         return MemberEntity.builder()
-            .id(member.getId().getValue())
+            .id(member.getId().value())
             .name(member.getName())
             .isIdentified(member.getIsIdentified())
             .createdAt(member.getCreatedAt())
@@ -21,7 +21,7 @@ public class MemberEntityMapper {
 
     public Member toDomain(MemberEntity entity) {
         return Member.builder()
-            .id(new MemberId(entity.getId()))
+            .id(new UUID(entity.getId()))
             .name(entity.getName())
             .isIdentified(entity.getIsIdentified())
             .createdAt(entity.getCreatedAt())

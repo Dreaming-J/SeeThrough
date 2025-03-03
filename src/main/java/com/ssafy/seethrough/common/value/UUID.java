@@ -1,15 +1,10 @@
-package com.ssafy.seethrough.member.domain.value;
+package com.ssafy.seethrough.common.value;
 
 import com.ssafy.seethrough.member.exception.InvalidMemberIdException;
-import lombok.Value;
 
-@Value
-public class MemberId {
-    String value;
-
-    public MemberId(String value) {
+public record UUID(String value) {
+    public UUID {
         validateMemberId(value);
-        this.value = value;
     }
 
     private void validateMemberId(String value) {
