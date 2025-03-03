@@ -15,7 +15,7 @@ CREATE TABLE member (
                         is_identified TINYINT(1) NOT NULL DEFAULT FALSE COMMENT '구성원 등록 여부',
                         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         recognition_times INTEGER NOT NULL DEFAULT 0,
-                        significant JSON NULL COMMENT '특이사항을 JSON배열 형식으로 저장',
+                        significants JSON NULL COMMENT '특이사항을 JSON배열 형식으로 저장',
 
                         PRIMARY KEY (id)
 );
