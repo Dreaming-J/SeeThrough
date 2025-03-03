@@ -9,4 +9,6 @@ public interface MemberRepository {
     Slice<Member> findMembers(Pageable pageable);
 
     Optional<Member> findByMemberId(MemberId memberId);
+
+    Slice<MemberLog> findMemberLogs(Pageable pageable);
 }

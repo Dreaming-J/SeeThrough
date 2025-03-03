@@ -4,9 +4,11 @@ import com.ssafy.seethrough.common.pagination.SliceRequestDto;
 import com.ssafy.seethrough.common.pagination.SliceResponseDto;
 import com.ssafy.seethrough.member.application.mapper.MemberDtoMapper;
 import com.ssafy.seethrough.member.domain.Member;
+import com.ssafy.seethrough.member.domain.MemberLog;
 import com.ssafy.seethrough.member.domain.MemberRepository;
 import com.ssafy.seethrough.member.domain.value.MemberId;
 import com.ssafy.seethrough.member.exception.MemberNotFoundException;
+import com.ssafy.seethrough.member.presentation.dto.response.MemberLogResponse;
 import com.ssafy.seethrough.member.presentation.dto.response.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -22,9 +24,9 @@ public class MemberService {
     private final MemberDtoMapper memberDtoMapper;
 
     /**
-     * 페이지네이션에 맞게 카드의 리스트 반환합니다.
+     * 페이지네이션에 맞게 구성원의 리스트 반환합니다.
      *
-     * 최대 10개의 카드를 반환하며 Slice 형식으로 다음 값이 있는지를 SliceInfo에 함께 반환
+     * 최대 10명의 구성원을 반환하며 Slice 형식으로 다음 값이 있는지를 SliceInfo에 함께 반환
      * @param page
      * @param size
      * @param sortBy
@@ -42,7 +44,7 @@ public class MemberService {
             .sortDirection(sortDirection)
             .build();
 
-        // Slice의 조건에 맞는 멤버를 가져옵니다.
+        // Slice의 조건에 맞는 구성원을 가져옵니다.
         Slice<Member> members = memberRepository.findMembers(sliceRequestDto.toPageable());
 
         // 페이지네이션 메타 데이터와 함께 반환합니다.
@@ -50,7 +52,7 @@ public class MemberService {
     }
 
     /**
-     * 카드의 Detail 정보 반환
+     * 구성원의 Detail 정보 반환
      *
      * @param memberId
      * @return
@@ -66,5 +68,33 @@ public class MemberService {
             );
 
         return memberDtoMapper.toResponse(member);
+    }
+
+    /**
+     * 페이지네이션에 맞게 구성원 로그의 리스트 반환합니다.
+     *
+     * 최대 10개의 로그를 반환하며 Slice 형식으로 다음 값이 있는지를 SliceInfo에 함께 반환
+     * @param page
+     * @param size
+     * @param sortBy
+     * @param sortDirection
+     * @return
+     */
+    public SliceResponseDto<MemberLogResponse> getMemberLogList(
+        Integer page, Integer size, String sortBy, String sortDirection
+    ) {
+        // Slice 값 생성
+        SliceRequestDto sliceRequestDto = SliceRequestDto.builder()
+            .page(page)
+            .size(size)
+            .sortBy(sortBy)
+            .sortDirection(sortDirection)
+            .build();
+
+        // Slice의 조건에 맞는 구성원을 가져옵니다.
+        Slice<MemberLog> memberLogs = memberRepository.findMemberLogs(sliceRequestDto.toPageable());
+
+        // 페이지네이션 메타 데이터와 함께 반환합니다.
+        return SliceResponseDto.of(memberLogs.map(memberDtoMapper::toResponse));
     }
 }

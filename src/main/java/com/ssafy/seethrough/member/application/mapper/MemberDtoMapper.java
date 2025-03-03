@@ -22,6 +22,7 @@ public class MemberDtoMapper {
 
     public MemberLogResponse toResponse(MemberLog memberLog) {
         return MemberLogResponse.builder()
+            .memberId(memberLog.getMemberId().getValue())
             .name(memberLog.getName())
             .image_url(memberLog.getImageUrl())
             .createdAt(memberLog.getCreatedAt())

@@ -2,6 +2,7 @@ package com.ssafy.seethrough.member.presentation;
 
 import com.ssafy.seethrough.common.pagination.SliceResponseDto;
 import com.ssafy.seethrough.member.application.service.MemberService;
+import com.ssafy.seethrough.member.presentation.dto.response.MemberLogResponse;
 import com.ssafy.seethrough.member.presentation.dto.response.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,18 @@ public class MemberController {
     @GetMapping("/{memberId}")
     public ResponseEntity<MemberResponse> getMemberDetail(@PathVariable String memberId) {
         MemberResponse response = memberService.getMemberDetail(memberId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/log")
+    public ResponseEntity<SliceResponseDto<MemberLogResponse>> getMemberLogList(
+        @RequestParam(defaultValue = "1") Integer page,
+        @RequestParam(defaultValue = "10") Integer size,
+        @RequestParam(defaultValue = "createdAt") String sortBy,
+        @RequestParam(defaultValue = "DESC") String sortDirection
+    ) {
+        SliceResponseDto<MemberLogResponse> response = memberService.getMemberLogList(page, size, sortBy, sortDirection);
 
         return ResponseEntity.ok(response);
     }
