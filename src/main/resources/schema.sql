@@ -14,21 +14,11 @@ CREATE TABLE members (
                          PRIMARY KEY (id)
 );
 
--- 얼굴 이미지 테이블
-CREATE TABLE member_images (
-                               id VARCHAR(36) NOT NULL COMMENT 'UUID',
-                               member_id VARCHAR(36) NOT NULL COMMENT 'UUID',
-                               image_url TEXT NOT NULL,
-                               created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-                               PRIMARY KEY (id),
-                               FOREIGN KEY (member_id) REFERENCES members(id)
-);
-
 -- 얼굴 인식 로그 테이블
 CREATE TABLE member_logs (
                              id INTEGER NOT NULL AUTO_INCREMENT,
                              member_id VARCHAR(36) NOT NULL COMMENT 'UUID',
+                             image_url TEXT NOT NULL,
                              created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
                              PRIMARY KEY (id),
