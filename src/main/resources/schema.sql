@@ -4,12 +4,12 @@ DROP TABLE IF EXISTS refrigerator_logs;
 DROP TABLE IF EXISTS refrigerator_inventory;
 DROP TABLE IF EXISTS food_categories;
 DROP TABLE IF EXISTS recognition_logs;
-DROP TABLE IF EXISTS face_images;
-DROP TABLE IF EXISTS family;
+DROP TABLE IF EXISTS member_images;
+DROP TABLE IF EXISTS member;
 
 
--- 가족(사용자) 정보 테이블
-CREATE TABLE family (
+-- 사용자 정보 테이블
+CREATE TABLE member (
     id VARCHAR(36) NOT NULL COMMENT 'UUID',
     name VARCHAR(100) NULL DEFAULT 'Undefined' COMMENT '랜덤 닉네임',
     is_identified TINYINT(1) NOT NULL DEFAULT FALSE COMMENT '구성원 등록 여부',
@@ -21,24 +21,24 @@ CREATE TABLE family (
 );
 
 -- 얼굴 이미지 테이블
-CREATE TABLE face_images (
+CREATE TABLE member_images (
     id VARCHAR(36) NOT NULL COMMENT 'UUID',
-    family_id VARCHAR(36) NOT NULL COMMENT 'UUID',
+    member_id VARCHAR(36) NOT NULL COMMENT 'UUID',
     image_url TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (family_id) REFERENCES family(id)
+    FOREIGN KEY (member_id) REFERENCES member(id)
 );
 
 -- 얼굴 인식 로그 테이블
 CREATE TABLE recognition_logs (
     id INTEGER NOT NULL AUTO_INCREMENT,
-    family_id VARCHAR(36) NOT NULL COMMENT 'UUID',
+    member_id VARCHAR(36) NOT NULL COMMENT 'UUID',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (family_id) REFERENCES family(id)
+    FOREIGN KEY (member_id) REFERENCES member(id)
 );
 
 -- 식품 카테고리 테이블
@@ -52,13 +52,13 @@ CREATE TABLE food_categories (
 -- 냉장고 재고 테이블
 CREATE TABLE refrigerator_inventory (
     id VARCHAR(36) NOT NULL COMMENT 'UUID',
-    family_id VARCHAR(36) NOT NULL COMMENT 'UUID',
+    member_id VARCHAR(36) NOT NULL COMMENT 'UUID',
     food_categories_id INTEGER NOT NULL,
     inbound_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expiration_at TIMESTAMP NULL COMMENT '소비 기한',
 
     PRIMARY KEY (id),
-    FOREIGN KEY (family_id) REFERENCES family (id),
+    FOREIGN KEY (member_id) REFERENCES member (id),
     FOREIGN KEY (food_categories_id) REFERENCES food_categories (id)
 );
 
@@ -66,11 +66,11 @@ CREATE TABLE refrigerator_inventory (
 CREATE TABLE refrigerator_logs (
     id INTEGER NOT NULL AUTO_INCREMENT COMMENT 'AUTO_INCREMENT',
     refrigerator_inventory_id VARCHAR(36) NOT NULL COMMENT 'UUID',
-    family_id VARCHAR(36) NOT NULL COMMENT 'UUID',
+    member_id VARCHAR(36) NOT NULL COMMENT 'UUID',
     movement_type ENUM('INBOUND', 'OUTBOUND') NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     FOREIGN KEY (refrigerator_inventory_id) REFERENCES refrigerator_inventory(id),
-    FOREIGN KEY (family_id) REFERENCES family(id)
+    FOREIGN KEY (member_id) REFERENCES member(id)
 );
