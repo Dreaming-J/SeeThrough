@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MemberResponse {
+    private String memberId;
     private String name;
     private Boolean isIdentified;
     private LocalDateTime createdAt;
