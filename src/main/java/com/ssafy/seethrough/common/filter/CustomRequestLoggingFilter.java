@@ -5,8 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -59,6 +57,21 @@ public class CustomRequestLoggingFilter extends OncePerRequestFilter {
             }
         } else {
             logMessage.append("Query Parameters: none\n");
+        }
+
+        if (request.getContentType() != null && (request.getContentType().contains("application/json")
+            || request.getContentType().contains("application/xml"))) {
+            // 본문 읽기
+            String requestBody;
+            try {
+                requestBody = new String(
+                    ((ContentCachingRequestWrapper) request).getContentAsByteArray(), ((ContentCachingRequestWrapper) request).getCharacterEncoding());
+                if (!requestBody.isEmpty()) {
+                    logMessage.append("---Body---\n").append(requestBody).append("\n");
+                }
+            } catch (Exception e) {
+                log.warn("Error reading request body", e);
+            }
         }
 
         logMessage.append("===========================");

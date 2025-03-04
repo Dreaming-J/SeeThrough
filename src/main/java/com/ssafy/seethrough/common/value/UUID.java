@@ -12,4 +12,8 @@ public record UUID(String value) {
             throw new InvalidMemberIdException("멤버 ID가 존재하지 않습니다.");
         }
     }
+
+    public static UUID generateUUID() {
+        return new UUID(java.util.UUID.randomUUID().toString());
+    }
 }

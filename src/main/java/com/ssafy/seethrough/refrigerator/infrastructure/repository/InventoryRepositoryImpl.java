@@ -22,4 +22,13 @@ public class InventoryRepositoryImpl implements InventoryRepository {
 
         return entities.map(inventoryEntityMapper::toDomain);
     }
+
+    @Override
+    public Boolean save(Inventory inventory) {
+        InventoryEntity entity = inventoryEntityMapper.toEntity(inventory);
+        System.out.println(entity);
+        inventoryJpaRepository.save(entity);
+
+        return true;
+    }
 }

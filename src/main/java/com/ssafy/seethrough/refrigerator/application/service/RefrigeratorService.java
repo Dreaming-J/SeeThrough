@@ -2,10 +2,13 @@ package com.ssafy.seethrough.refrigerator.application.service;
 
 import com.ssafy.seethrough.common.pagination.SliceRequestDto;
 import com.ssafy.seethrough.common.pagination.SliceResponseDto;
+import com.ssafy.seethrough.common.value.UUID;
 import com.ssafy.seethrough.refrigerator.application.mapper.InventoryRepositoryDtoMapper;
 import com.ssafy.seethrough.refrigerator.domain.Inventory;
 import com.ssafy.seethrough.refrigerator.domain.InventoryRepository;
+import com.ssafy.seethrough.refrigerator.presentation.dto.request.CreateInventoryRequest;
 import com.ssafy.seethrough.refrigerator.presentation.dto.response.InventoryResponse;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -45,5 +48,27 @@ public class RefrigeratorService {
 
         // 페이지네이션 메타 데이터와 함께 반환합니다.
         return SliceResponseDto.of(inventories.map(inventoryRepositoryDtoMapper::toResponse));
+    }
+
+    /**
+     * 새로운 재고를 추가하고 성공 여부를 반환합니다.
+     *
+     * @param request
+     * @return
+     */
+    @Transactional
+    public Boolean createInventory(CreateInventoryRequest request) {
+        // TODO: memberId가 members 테이블에 존재하는지 검증
+
+        // TODO: foodCategoryId가 food_category 테이블에 존재하는지 검증
+
+        Inventory inventory = Inventory.builder()
+            .id(UUID.generateUUID())
+            .memberId(new UUID(request.getMemberId()))
+            .foodCategoriesId(request.getFoodCategoryId())
+            .inboudAt(LocalDateTime.now())
+            .build();
+
+        return inventoryRepository.save(inventory);
     }
 }

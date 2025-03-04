@@ -2,10 +2,13 @@ package com.ssafy.seethrough.refrigerator.presentation;
 
 import com.ssafy.seethrough.common.pagination.SliceResponseDto;
 import com.ssafy.seethrough.refrigerator.application.service.RefrigeratorService;
+import com.ssafy.seethrough.refrigerator.presentation.dto.request.CreateInventoryRequest;
 import com.ssafy.seethrough.refrigerator.presentation.dto.response.InventoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +30,14 @@ public class RefrigeratorController {
         SliceResponseDto<InventoryResponse> responseList = refrigeratorService.getInventoryList(page, size, sortBy, sortDirection);
 
         return ResponseEntity.ok(responseList);
+    }
+
+    @PostMapping
+    public ResponseEntity<Boolean> createInventory(
+        @RequestBody CreateInventoryRequest request
+    ) {
+        Boolean result = refrigeratorService.createInventory(request);
+
+        return ResponseEntity.ok(result);
     }
 }

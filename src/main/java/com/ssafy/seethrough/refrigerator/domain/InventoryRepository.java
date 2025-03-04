@@ -5,4 +5,6 @@ import org.springframework.data.domain.Slice;
 
 public interface InventoryRepository {
     Slice<Inventory> findInventories(Pageable pageable);
+
+    Boolean save(Inventory inventory);
 }
