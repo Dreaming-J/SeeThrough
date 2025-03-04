@@ -41,7 +41,7 @@ public class RefrigeratorController {
 
     @PostMapping
     @Operation(
-        summary = "냉장고 식품 추가",
+        summary = "냉장고 식품 입고",
         description = "시스템에 새로운 식품을 추가하여 성공 여부를 반환합니다."
     )
     public ResponseEntity<Boolean> createInventory(

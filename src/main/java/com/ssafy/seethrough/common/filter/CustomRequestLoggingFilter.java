@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -30,9 +31,9 @@ public class CustomRequestLoggingFilter extends OncePerRequestFilter {
         StringBuilder logMessage = new StringBuilder("\n===== Request Details =====\n");
 
         // 기본 정보
-        logMessage.append("URI        : ").append(request.getRequestURI()).append("\n");
-        logMessage.append("Method     : ").append(request.getMethod()).append("\n");
-        logMessage.append("Client IP  : ").append(request.getRemoteAddr()).append("\n");
+        logMessage.append("URI: ").append(request.getRequestURI()).append("\n");
+        logMessage.append("Method: ").append(request.getMethod()).append("\n");
+        logMessage.append("Client IP: ").append(request.getRemoteAddr()).append("\n");
 
         // 쿼리 스트링
         String queryString = request.getQueryString();
@@ -43,7 +44,7 @@ public class CustomRequestLoggingFilter extends OncePerRequestFilter {
             for (String param : parameters) {
                 try {
                     // 파라미터 디코딩 및 분리
-                    String decodedParam = java.net.URLDecoder.decode(param, "UTF-8");
+                    String decodedParam = java.net.URLDecoder.decode(param, StandardCharsets.UTF_8);
                     String[] keyValue = decodedParam.split("=", 2);
                     String key = keyValue[0];
                     String value = keyValue.length > 1 ? keyValue[1] : "";
@@ -65,13 +66,21 @@ public class CustomRequestLoggingFilter extends OncePerRequestFilter {
             String requestBody;
             try {
                 requestBody = new String(
-                    ((ContentCachingRequestWrapper) request).getContentAsByteArray(), ((ContentCachingRequestWrapper) request).getCharacterEncoding());
+                    ((ContentCachingRequestWrapper) request).getContentAsByteArray(),
+                    ((ContentCachingRequestWrapper) request).getCharacterEncoding());
                 if (!requestBody.isEmpty()) {
-                    logMessage.append("---Body---\n").append(requestBody).append("\n");
+                    logMessage.append("Boby:\n");
+                    // 들여쓰기와 함께 본문 출력
+                    String[] bodyLines = requestBody.split("\n");
+                    for (String line : bodyLines) {
+                        logMessage.append("    ").append(line).append("\n");
+                    }
                 }
             } catch (Exception e) {
                 log.warn("Error reading request body", e);
             }
+        } else {
+            logMessage.append("Body: none\n");
         }
 
         logMessage.append("===========================");
