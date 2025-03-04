@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +46,19 @@ public class RefrigeratorController {
         description = "시스템에 새로운 식품을 추가하여 성공 여부를 반환합니다."
     )
     public ResponseEntity<Boolean> createInventory(
+        @RequestBody CreateInventoryRequest request
+    ) {
+        Boolean result = refrigeratorService.createInventory(request);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping
+    @Operation(
+        summary = "냉장고 식품 출고",
+        description = "시스템에 기존 식품을 삭제하여 성공 여부를 반환합니다."
+    )
+    public ResponseEntity<Boolean> deleteInventory(
         @RequestBody CreateInventoryRequest request
     ) {
         Boolean result = refrigeratorService.createInventory(request);

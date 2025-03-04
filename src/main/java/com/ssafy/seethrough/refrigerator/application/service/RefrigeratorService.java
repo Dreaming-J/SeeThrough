@@ -6,6 +6,8 @@ import com.ssafy.seethrough.common.value.UUID;
 import com.ssafy.seethrough.refrigerator.application.mapper.InventoryRepositoryDtoMapper;
 import com.ssafy.seethrough.refrigerator.domain.Inventory;
 import com.ssafy.seethrough.refrigerator.domain.InventoryRepository;
+import com.ssafy.seethrough.refrigerator.domain.MovementType;
+import com.ssafy.seethrough.refrigerator.domain.RefrigeratorLog;
 import com.ssafy.seethrough.refrigerator.presentation.dto.request.CreateInventoryRequest;
 import com.ssafy.seethrough.refrigerator.presentation.dto.response.InventoryResponse;
 import java.time.LocalDateTime;
@@ -54,7 +56,6 @@ public class RefrigeratorService {
      * 새로운 재고를 추가하고 성공 여부를 반환합니다.
      *
      * @param request
-     * @return
      */
     @Transactional
     public Boolean createInventory(CreateInventoryRequest request) {
@@ -69,6 +70,28 @@ public class RefrigeratorService {
             .inboudAt(LocalDateTime.now())
             .build();
 
-        return inventoryRepository.save(inventory);
+        //식품 입고
+        inventoryRepository.save(inventory);
+
+        //입고 로그 추가
+        createLog(inventory.getId(), request);
+
+        return true;
+    }
+
+    /**
+     * 입고 로그를 추가합니다.
+     *
+     * @param request
+     */
+    private void createLog(UUID inventoryId, CreateInventoryRequest request) {
+        RefrigeratorLog refrigeratorLog = RefrigeratorLog.builder()
+            .refrigeratorInventoryId(inventoryId)
+            .memberId(new UUID(request.getMemberId()))
+            .movementType(MovementType.INBOUND)
+            .createdAt(LocalDateTime.now())
+            .build();
+
+        inventoryRepository.saveInBoundLog(refrigeratorLog);
     }
 }
